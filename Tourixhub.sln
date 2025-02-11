@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tourixhub.Api", "Tourixhub.Api\Tourixhub.Api.csproj", "{3D79A1C6-E141-436C-8B22-4D629FA2FE0C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tourixhub.Domain", "Tourixhub.Domain\Tourixhub.Domain.csproj", "{D44C7DE1-C559-4895-BBA8-5EEC01A0492A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tourixhub.Infrastructure", "Tourixhub.Infrastructure\Tourixhub.Infrastructure.csproj", "{8BF6B3C0-2DE9-4D2D-8620-8A7A74FFAB61}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tourixhub.Application", "Tourixhub.Application\Tourixhub.Application.csproj", "{8975CEB5-A6FA-4A3C-833F-5EA5F5B4163B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3D79A1C6-E141-436C-8B22-4D629FA2FE0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D79A1C6-E141-436C-8B22-4D629FA2FE0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D79A1C6-E141-436C-8B22-4D629FA2FE0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D79A1C6-E141-436C-8B22-4D629FA2FE0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D44C7DE1-C559-4895-BBA8-5EEC01A0492A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D44C7DE1-C559-4895-BBA8-5EEC01A0492A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D44C7DE1-C559-4895-BBA8-5EEC01A0492A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D44C7DE1-C559-4895-BBA8-5EEC01A0492A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BF6B3C0-2DE9-4D2D-8620-8A7A74FFAB61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BF6B3C0-2DE9-4D2D-8620-8A7A74FFAB61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BF6B3C0-2DE9-4D2D-8620-8A7A74FFAB61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BF6B3C0-2DE9-4D2D-8620-8A7A74FFAB61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8975CEB5-A6FA-4A3C-833F-5EA5F5B4163B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8975CEB5-A6FA-4A3C-833F-5EA5F5B4163B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8975CEB5-A6FA-4A3C-833F-5EA5F5B4163B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8975CEB5-A6FA-4A3C-833F-5EA5F5B4163B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

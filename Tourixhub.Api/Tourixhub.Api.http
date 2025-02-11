@@ -1,0 +1,6 @@
+@Tourixhub.Api_HostAddress = http://localhost:5194
+
+GET {{Tourixhub.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
