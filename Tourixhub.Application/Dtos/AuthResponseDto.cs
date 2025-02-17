@@ -10,6 +10,11 @@ namespace Tourixhub.Application.Dtos
     {
         public bool Success { get; set; }
         public string? Message { get; set; }
-        public IEnumerable<string>? Errors { get; set; }
+        public IEnumerable<ErrorDto>? Errors { get; set; } = new List<ErrorDto>();
+    }
+    public class ErrorDto
+    {
+        public string? Code { get; set; }
+        public string? Description { get; set; }
     }
 }

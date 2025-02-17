@@ -21,7 +21,7 @@ namespace Tourixhub.Domain.Entities
 
         // Navigation
         public AppUser AppUser { get; set; }
-        public ICollection<Like> Likes { get; set; } = new List<Like>();
+        public ICollection<Like> Likes { get; set; } = [];
         public ICollection<Comment> Comments { get; set; } = [];
         public ICollection<Favorite> Favorites { get; set; } = [];
         public ICollection<Report> Reports { get; set; } = [];

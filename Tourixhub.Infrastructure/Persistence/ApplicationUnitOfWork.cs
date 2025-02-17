@@ -11,12 +11,16 @@ namespace Tourixhub.Infrastructure.Persistence
 {
     public class ApplicationUnitOfWork : UnitOfWork, IApplicationUnitOfWork
     {
-        public ApplicationUnitOfWork(ApplicationDbContext context, IPostRepository postRepository) 
+        public ApplicationUnitOfWork(
+            ApplicationDbContext context, 
+            IPostRepository postRepository, ICommentRepository commentRepository) 
             : base(context)
         {
             PostRepository = postRepository;
+            CommentRepository = commentRepository;
         }
 
         public IPostRepository PostRepository { get; }
+        public ICommentRepository CommentRepository { get; }
     }
 }

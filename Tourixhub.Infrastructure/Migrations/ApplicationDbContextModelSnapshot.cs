@@ -513,7 +513,7 @@ namespace Tourixhub.Infrastructure.Migrations
                     b.HasOne("Tourixhub.Domain.Entities.AppUser", "AppUser")
                         .WithMany("Posts")
                         .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("AppUser");

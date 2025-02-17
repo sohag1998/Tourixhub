@@ -7,14 +7,12 @@ using System.Threading.Tasks;
 
 namespace Tourixhub.Application.Dtos
 {
-    public class UserRegistrationDto
+    public class AddCommentDto
     {
         [Required]
-        public string FullName { get; set; }
+        public string PostId { get; set; }
         [Required]
-        [DataType(DataType.EmailAddress)]
-        public string Email { get; set; }
-        [Required]
-        public string Password { get; set; }
+        public string Content { get; set;}
+
     }
 }

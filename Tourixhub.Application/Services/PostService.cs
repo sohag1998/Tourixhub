@@ -19,7 +19,12 @@ namespace Tourixhub.Application.Services
             _applicationUnitOfWork = applicationUnitOfWork;
             _mapper = mapper;
         }
-
+        public async Task<List<PostDto>> GetAllPostAsync(Guid loggedInUserId)
+        {
+            var allPosts = await _applicationUnitOfWork.PostRepository.GetAllPostAsync(loggedInUserId);
+            var postDtos = _mapper.Map<List<PostDto>>(allPosts);
+            return postDtos;
+        }
         public async Task<bool> AddPost(AddPostDto postDto, Guid appUserId)
         {
             var post = _mapper.Map<Post>(postDto);
@@ -29,5 +34,50 @@ namespace Tourixhub.Application.Services
             await _applicationUnitOfWork.PostRepository.AddAsync(post);
             return await _applicationUnitOfWork.SaveAsync();
         }
+
+        public async Task<bool> TogglePostLikeAsync(ToggleLikeDto likeDto, Guid loggedInUserId)
+        {
+            try
+            {
+                var result = await _applicationUnitOfWork.PostRepository.TogglePostLikeAsync(Guid.Parse(likeDto.PostId), loggedInUserId);
+                if (result == true)
+                {
+                    await _applicationUnitOfWork.SaveAsync();
+                }
+                return result;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public async Task<bool> AddCommentAsync(AddCommentDto commentDto, Guid loggedInUserId)
+        {
+            try
+            {
+                var post = await _applicationUnitOfWork.PostRepository.GetByIdAsync(Guid.Parse(commentDto.PostId));
+                if(post != null)
+                {
+                    var comment = new Comment
+                    {
+                        PostId = Guid.Parse(commentDto.PostId),
+                        Content = commentDto.Content,
+                        AppUserId = loggedInUserId,
+                        CreateAt = DateTime.UtcNow,
+                        UpdateAt = DateTime.UtcNow
+                    };
+                    await _applicationUnitOfWork.CommentRepository.AddAsync(comment);
+                    await _applicationUnitOfWork.SaveAsync();
+                    return true;
+                }
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+
     }
 }

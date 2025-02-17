@@ -10,6 +10,9 @@ namespace Tourixhub.Application.Interfaces
 {
     public interface IPostService
     {
+        Task<List<PostDto>> GetAllPostAsync(Guid loggedInUserId);
         Task<bool> AddPost(AddPostDto postDto, Guid appUserId);
+        Task<bool> TogglePostLikeAsync(ToggleLikeDto likeDto, Guid loggedInUserId);
+        Task<bool> AddCommentAsync(AddCommentDto commentDto, Guid loggedInUserId);
     }
 }

@@ -19,7 +19,7 @@ namespace Tourixhub.Domain.Entities
         public Guid PostId { get; set; }
 
         // Navigation property
-        public AppUser AppUser { get; set; } = new AppUser();
-        public Post Post { get; set; } = new Post();
+        public AppUser AppUser { get; set; }
+        public Post Post { get; set; }
     }
 }

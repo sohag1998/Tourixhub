@@ -6,6 +6,7 @@ using Tourixhub.Infrastructure.Repository;
 using Tourixhub.Application.Services;
 using Tourixhub.Application.Mappings;
 using Tourixhub.Domain.Repository;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,7 @@ builder.Services.AddOpenApiService()
 builder.Services.AddScoped<IApplicationUnitOfWork, ApplicationUnitOfWork>();
 builder.Services.AddScoped<IPostRepository, PostRepository>();
 builder.Services.AddScoped<IPostService, PostService>();
+builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
@@ -34,6 +36,7 @@ builder.Services.AddAutoMapper(typeof(AutoProfile));
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddControllers();
+
 
 
 var app = builder.Build();

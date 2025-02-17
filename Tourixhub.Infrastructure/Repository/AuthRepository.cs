@@ -35,7 +35,11 @@ namespace Tourixhub.Infrastructure.Repository
                 return new AuthResponseDto
                 {
                     Success = false,
-                    Errors = result.Errors.Select(e => e.Description)
+                    Errors = result.Errors.Select( e=> new ErrorDto
+                    {
+                        Code = e.Code,
+                        Description = e.Description
+                    })
                 };
             }
             

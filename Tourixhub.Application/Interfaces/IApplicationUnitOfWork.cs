@@ -10,5 +10,6 @@ namespace Tourixhub.Application.Interfaces
     public interface IApplicationUnitOfWork:IUnitOfWork
     {
         IPostRepository PostRepository { get; }
+        ICommentRepository CommentRepository { get; }
     }
 }

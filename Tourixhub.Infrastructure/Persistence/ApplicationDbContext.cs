@@ -23,11 +23,12 @@ namespace Tourixhub.Infrastructure.Persistence
         {
             base.OnModelCreating(modelBuilder);
 
-            // For User Table
-            modelBuilder.Entity<AppUser>()
-                .HasMany(u => u.Posts)
-                .WithOne(p => p.AppUser)
-                .HasForeignKey(p => p.AppUserId);
+            // For Post Table
+            modelBuilder.Entity<Post>()
+                .HasOne(p => p.AppUser)
+                .WithMany(u => u.Posts)
+                .HasForeignKey(p => p.AppUserId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             // For Like Table
             modelBuilder.Entity<Like>()
