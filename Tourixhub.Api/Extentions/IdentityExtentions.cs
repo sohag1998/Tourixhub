@@ -36,9 +36,14 @@ namespace Tourixhub.Application.Extentions
             )
         {
             services
-                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(y =>
+                .AddAuthentication( option =>
                 {
+                    option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    option.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(y =>
+                {                   
                     y.SaveToken = false;
                     y.TokenValidationParameters = new TokenValidationParameters
                     {
@@ -47,6 +52,21 @@ namespace Tourixhub.Application.Extentions
                                 Encoding.UTF8.GetBytes(config["AppSettings:JWTsecret"]!)),
                         ValidateIssuer = false,
                         ValidateAudience = false,
+                    };
+                    y.Events = new JwtBearerEvents
+                    {
+                        OnMessageReceived = context =>
+                        {
+                            var accessToken = context.Request.Query["access_token"];
+                            var path = context.HttpContext.Request.Path;
+                            if (!string.IsNullOrEmpty(accessToken) &&
+                            (path.StartsWithSegments("/likeHub")))
+                            {
+                                context.Token = accessToken;
+                            }
+                            return Task.CompletedTask;
+
+                        }
                     };
                 });
             services.AddAuthorization(options =>

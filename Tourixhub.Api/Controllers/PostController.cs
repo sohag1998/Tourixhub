@@ -66,9 +66,15 @@ namespace Tourixhub.Api.Controllers
         {
             if (ModelState.IsValid)
             {
-                return Ok(await _postService.TogglePostLikeAsync(likeDto, _singinUserId));
+                var updatedLikeCount = await _postService.TogglePostLikeAsync(likeDto, _singinUserId);
+                if(updatedLikeCount != null)
+                {
+                    return Ok(new { likeCout = updatedLikeCount });
+                }
+                return BadRequest("Failed to toggle like");
             }
-            return Ok(new { message = "Invaid data" });
+
+            return BadRequest("Invalid data");
         }
 
         [HttpPost("addcomment")]

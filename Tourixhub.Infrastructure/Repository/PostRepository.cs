@@ -122,34 +122,34 @@ namespace Tourixhub.Infrastructure.Repository
             return false; 
         }
 
-        public async Task<bool> TogglePostLikeAsync(Guid postId, Guid loggedInUserId)
+        public async Task<int?> TogglePostLikeAsync(Guid postId, Guid loggedInUserId)
         {
             var post = await _context.Posts
-                    .Where(p => p.Id == postId).FirstOrDefaultAsync();
-            if (post != null)
-            {
-                var like = await _context.Likes
+                    .Where(p => p.Id == postId)
+                    .Include(p => p.Likes)
+                    .FirstOrDefaultAsync();
+            if (post == null) return null;
+
+            var like = await _context.Likes
                     .Where(f => f.AppUserId == loggedInUserId && f.PostId == postId)
                     .FirstOrDefaultAsync();
-                if (like != null)
-                {
-                    _context.Remove(like);
+            if (like != null)
+            {
+                _context.Remove(like);
 
-                }
-                else
-                {
-                    var newLike = new Like
-                    {
-                        AppUserId = loggedInUserId,
-                        PostId = postId,
-                        
-                    };
-                    await _context.Likes.AddAsync(newLike);
-
-                }
-                return true;
             }
-            return false;
+            else
+            {
+                var newLike = new Like
+                {
+                    AppUserId = loggedInUserId,
+                    PostId = postId,
+
+                };
+                await _context.Likes.AddAsync(newLike);
+            }
+            await _context.SaveChangesAsync();
+            return post.Likes.Count;
 
         }
 

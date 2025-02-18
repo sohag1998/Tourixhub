@@ -14,10 +14,12 @@ namespace Tourixhub.Application.Services
     {
         private readonly IApplicationUnitOfWork _applicationUnitOfWork;
         private readonly IMapper _mapper;
-        public PostService(IApplicationUnitOfWork applicationUnitOfWork, IMapper mapper)
+        private readonly ILikeHubService _likeHubService;
+        public PostService(IApplicationUnitOfWork applicationUnitOfWork, IMapper mapper, ILikeHubService likeHubService)
         {
             _applicationUnitOfWork = applicationUnitOfWork;
             _mapper = mapper;
+            _likeHubService = likeHubService;
         }
         public async Task<List<PostDto>> GetAllPostAsync(Guid loggedInUserId)
         {
@@ -35,20 +37,20 @@ namespace Tourixhub.Application.Services
             return await _applicationUnitOfWork.SaveAsync();
         }
 
-        public async Task<bool> TogglePostLikeAsync(ToggleLikeDto likeDto, Guid loggedInUserId)
+        public async Task<int?> TogglePostLikeAsync(ToggleLikeDto likeDto, Guid loggedInUserId)
         {
             try
             {
                 var result = await _applicationUnitOfWork.PostRepository.TogglePostLikeAsync(Guid.Parse(likeDto.PostId), loggedInUserId);
-                if (result == true)
+                if (result != null)
                 {
-                    await _applicationUnitOfWork.SaveAsync();
+                    await _likeHubService.SendLikeUpdate(likeDto.PostId, result.Value);
                 }
                 return result;
             }
             catch
             {
-                return false;
+                return null;
             }
         }
         public async Task<bool> AddCommentAsync(AddCommentDto commentDto, Guid loggedInUserId)

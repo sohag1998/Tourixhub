@@ -12,7 +12,7 @@ namespace Tourixhub.Domain.Repository
         Task<List<Post>> GetAllPostAsync(Guid loggedInUserId);
         Task<List<Post>> GetAllFavoritePostAsync(Guid loggedInUserId);
         Task<bool> RemovePostAsync(Guid postId);
-        Task<bool> TogglePostLikeAsync(Guid postId, Guid loggedInUserId);
+        Task<int?> TogglePostLikeAsync(Guid postId, Guid loggedInUserId);
         Task<bool> TogglePostFavoriteAsync(Guid postId, Guid loggedInUserId);
         Task<bool> TogglePostVisibilityAsync(Guid postId, Guid loggedInUserId);
         Task<bool> CreatePostReportAsync(Guid postId, Guid loggedInUserId);
