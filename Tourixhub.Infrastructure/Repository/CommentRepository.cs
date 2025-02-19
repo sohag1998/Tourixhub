@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,16 @@ namespace Tourixhub.Infrastructure.Repository
         public CommentRepository(ApplicationDbContext context):base(context)
         {
             _context = context;   
+        }
+
+        public async Task<List<Comment>> GetAllCommentByPostId(Guid postId)
+        {
+            var comments = await _context.Comments
+                            .Where(c => c.PostId == postId)
+                            .Include(c => c.AppUser)
+                            .OrderByDescending(c => c.CreateAt)
+                            .ToListAsync();
+            return comments;
         }
     }
 }

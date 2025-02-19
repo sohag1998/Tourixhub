@@ -82,9 +82,17 @@ namespace Tourixhub.Api.Controllers
         {
             if (ModelState.IsValid)
             {
-                return Ok(await _postService.AddCommentAsync(commentDto, _singinUserId));
+                return Ok(new { postId = commentDto.PostId, comment = await _postService.AddCommentAsync(commentDto, _singinUserId)});
             }
-            return NotFound();
+            return BadRequest(new {error = "Invalid form"});
+        }
+
+        [HttpGet("commentsbypostId")]
+        public async Task<IActionResult> GetCommentsByPostId(string postId)
+        {
+            if (!ModelState.IsValid) return BadRequest(new { isSuccess = false, error = "Invalid post id" });
+            var result = await _postService.GetAllCommentByPostId(Guid.Parse(postId));
+            return Ok(result);
         }
     }
 }

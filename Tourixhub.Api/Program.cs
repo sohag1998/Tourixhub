@@ -29,6 +29,8 @@ builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ILikeHubService, LikeHubService>();
+builder.Services.AddScoped<ICommentHubService, CommentHubService>();
+builder.Services.AddScoped<IPostHubService, PostHubService>();
 builder.Services.AddScoped<IUserContextService, UserContextService>();
 
 
@@ -69,7 +71,7 @@ app.UseHttpsRedirection();
 
 app.MapControllers();
 //app.MapIdentityApi<AppUser>();
-app.MapHub<LikeHub>("/likeHub");
+app.MapHub<ApplicationHub>("/hub/postHub");
     
 
 app.Run();

@@ -60,7 +60,7 @@ namespace Tourixhub.Application.Extentions
                             var accessToken = context.Request.Query["access_token"];
                             var path = context.HttpContext.Request.Path;
                             if (!string.IsNullOrEmpty(accessToken) &&
-                            (path.StartsWithSegments("/likeHub")))
+                            (path.StartsWithSegments("/hub")))
                             {
                                 context.Token = accessToken;
                             }

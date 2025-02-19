@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Tourixhub.Application.Dtos;
 using Tourixhub.Application.Interfaces;
 using Tourixhub.Domain.Entities;
@@ -14,12 +15,16 @@ namespace Tourixhub.Application.Services
     {
         private readonly IApplicationUnitOfWork _applicationUnitOfWork;
         private readonly IMapper _mapper;
-        private readonly ILikeHubService _likeHubService;
-        public PostService(IApplicationUnitOfWork applicationUnitOfWork, IMapper mapper, ILikeHubService likeHubService)
+        private readonly IPostHubService _postHubService;
+        public PostService(
+            IApplicationUnitOfWork applicationUnitOfWork, 
+            IMapper mapper,
+            IPostHubService postHubService
+            )
         {
             _applicationUnitOfWork = applicationUnitOfWork;
             _mapper = mapper;
-            _likeHubService = likeHubService;
+            _postHubService = postHubService;
         }
         public async Task<List<PostDto>> GetAllPostAsync(Guid loggedInUserId)
         {
@@ -44,7 +49,9 @@ namespace Tourixhub.Application.Services
                 var result = await _applicationUnitOfWork.PostRepository.TogglePostLikeAsync(Guid.Parse(likeDto.PostId), loggedInUserId);
                 if (result != null)
                 {
-                    await _likeHubService.SendLikeUpdate(likeDto.PostId, result.Value);
+                    //await _applicationUnitOfWork.SaveAsync();
+                    await _postHubService.SendLikeUpdate(likeDto.PostId, result.Value);
+
                 }
                 return result;
             }
@@ -53,31 +60,41 @@ namespace Tourixhub.Application.Services
                 return null;
             }
         }
-        public async Task<bool> AddCommentAsync(AddCommentDto commentDto, Guid loggedInUserId)
+        public async Task<CommentDto?> AddCommentAsync(AddCommentDto commentDto, Guid loggedInUserId)
         {
             try
             {
-                var post = await _applicationUnitOfWork.PostRepository.GetByIdAsync(Guid.Parse(commentDto.PostId));
-                if(post != null)
+                var postId = Guid.Parse(commentDto.PostId);
+                var post = await _applicationUnitOfWork.PostRepository.GetByIdAsync(postId);
+                if (post == null) return null;
+                var comment = new Comment
                 {
-                    var comment = new Comment
-                    {
-                        PostId = Guid.Parse(commentDto.PostId),
-                        Content = commentDto.Content,
-                        AppUserId = loggedInUserId,
-                        CreateAt = DateTime.UtcNow,
-                        UpdateAt = DateTime.UtcNow
-                    };
-                    await _applicationUnitOfWork.CommentRepository.AddAsync(comment);
-                    await _applicationUnitOfWork.SaveAsync();
-                    return true;
-                }
-                return false;
+                    PostId = postId,
+                    Content = commentDto.Content,
+                    AppUserId = loggedInUserId,
+                    CreateAt = DateTime.UtcNow,
+                    UpdateAt = DateTime.UtcNow
+                };
+                await _applicationUnitOfWork.CommentRepository.AddAsync(comment);
+                await _applicationUnitOfWork.SaveAsync();
+                var comments = await this.GetAllCommentByPostId(postId);
+                var latestcomment = comments.First();
+                await _postHubService.SendCommentUpdateAsync(commentDto.PostId, comments);
+                return latestcomment;
             }
             catch
             {
-                return false;
+                return null;
             }
+        }
+
+        public async Task<List<CommentDto>> GetAllCommentByPostId(Guid postId)
+        {
+            var comments = await _applicationUnitOfWork.CommentRepository.GetAllCommentByPostId(postId);
+
+            var mappedComments = _mapper.Map<List<CommentDto>>(comments);
+
+            return mappedComments;
         }
 
 

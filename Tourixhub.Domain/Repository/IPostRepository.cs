@@ -16,5 +16,6 @@ namespace Tourixhub.Domain.Repository
         Task<bool> TogglePostFavoriteAsync(Guid postId, Guid loggedInUserId);
         Task<bool> TogglePostVisibilityAsync(Guid postId, Guid loggedInUserId);
         Task<bool> CreatePostReportAsync(Guid postId, Guid loggedInUserId);
+        
     }
 }

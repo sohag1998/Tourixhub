@@ -13,6 +13,7 @@ namespace Tourixhub.Application.Interfaces
         Task<List<PostDto>> GetAllPostAsync(Guid loggedInUserId);
         Task<bool> AddPost(AddPostDto postDto, Guid appUserId);
         Task<int?> TogglePostLikeAsync(ToggleLikeDto likeDto, Guid loggedInUserId);
-        Task<bool> AddCommentAsync(AddCommentDto commentDto, Guid loggedInUserId);
+        Task<CommentDto?> AddCommentAsync(AddCommentDto commentDto, Guid loggedInUserId);
+        Task<List<CommentDto>> GetAllCommentByPostId(Guid postId);
     }
 }

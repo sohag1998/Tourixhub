@@ -9,5 +9,6 @@ namespace Tourixhub.Domain.Repository
 {
     public interface ICommentRepository: IRepository<Comment, Guid>
     {
+        Task<List<Comment>> GetAllCommentByPostId(Guid postId);
     }
 }

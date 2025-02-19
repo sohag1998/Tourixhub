@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Tourixhub.Infrastructure.SignalR
 {
     
-    public class LikeHub:Hub
+    public class ApplicationHub: Hub
     {
     }
 }

@@ -36,6 +36,7 @@ namespace Tourixhub.Application.Dtos
     {
         public Guid Id { get; set; }
         public string Content { get; set; }
+        public DateTime CreateAt { get; set; }
 
         // Use AppUserDto instead of raw user info
         public AppUserDto AppUser { get; set; }
