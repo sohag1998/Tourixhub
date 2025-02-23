@@ -24,26 +24,37 @@ namespace Tourixhub.Api.Controllers
             _singinUserId = _userContextService.AppUserId;
         }
 
-
-        
         [HttpPost("addpost")]
-        public async Task<IActionResult> AddPost([FromBody] AddPostDto postDto)
+        [Consumes("multipart/form-data")] // Specifies the content type to accept
+        [Produces("application/json")]
+        public async Task<IActionResult> AddPost([FromForm] AddPostDto postDto)
         {
-            if (ModelState.IsValid)
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            //if (string.IsNullOrWhiteSpace(postDto.Content) || (postDto.Images == null || postDto.Images.Count < 0))
+            //{
+            //    return BadRequest("Either Content or at least one Image must be provided.");
+            //}
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Either Content or at least one Image must be provided.");
+            }
+            try
             {
                 var appUserId = _userContextService.AppUserId;
                 
-                bool isCreated = await _postService.AddPost(postDto, appUserId);
+                var post = await _postService.AddPost(postDto, appUserId, token);
 
-                if(isCreated)
+                if(post != null)
                 {
-                    return Ok(new { message = "Post created successfully" });
+                    return Ok(new { message = "Post created successfully", post = post });
                 }
 
                 return BadRequest(new { message = "Failed to create post" });
             }
-
-            return BadRequest(new {message = "Invalid Request"});
+            catch(Exception ex)
+            {
+                return StatusCode(500, $"Internal server error {ex.Message}");
+            }
         }
        
         

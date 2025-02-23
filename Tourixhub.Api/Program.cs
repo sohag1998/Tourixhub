@@ -21,11 +21,14 @@ builder.Services.AddOpenApiService()
                 .AddIdentityAuth(builder.Configuration);
 
 
+
+builder.Services.AddHttpClient<IFileUploadService, FileUploadService>();
 // All Custom Service
 builder.Services.AddScoped<IApplicationUnitOfWork, ApplicationUnitOfWork>();
 builder.Services.AddScoped<IPostRepository, PostRepository>();
 builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+builder.Services.AddScoped<IPostImageRepository, PostImageRepository>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ILikeHubService, LikeHubService>();
@@ -44,7 +47,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowLocalhost",
-        builder => builder.WithOrigins("http://localhost:4200")  // Angular App URL
+        builder => builder.WithOrigins("http://localhost:4200", "https://localhost:7025")  // Angular App URL
                           .AllowAnyHeader()
                           .AllowAnyMethod()
                           .AllowCredentials());  // Important for SignalR to include cookies
@@ -59,6 +62,8 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
+app.UseStaticFiles();
+
 // Use CORS policy globally
 app.UseCors("AllowLocalhost");
 
@@ -68,6 +73,8 @@ app.ConfigureSwaggerExplorer()
 
 
 app.UseHttpsRedirection();
+
+
 
 app.MapControllers();
 //app.MapIdentityApi<AppUser>();

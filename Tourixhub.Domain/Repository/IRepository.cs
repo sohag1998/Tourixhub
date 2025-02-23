@@ -12,6 +12,7 @@ namespace Tourixhub.Domain.Repository
         Task<TEntity?> GetByIdAsync(TKey Id);
         Task<IEnumerable<TEntity>> GetAllAsync();
         Task AddAsync(TEntity entity);
+        Task AddRangeAsync(List<TEntity> entities);
         void Update(TEntity entity);
     }
 }

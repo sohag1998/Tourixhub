@@ -16,15 +16,18 @@ namespace Tourixhub.Application.Services
         private readonly IApplicationUnitOfWork _applicationUnitOfWork;
         private readonly IMapper _mapper;
         private readonly IPostHubService _postHubService;
+        private readonly IFileUploadService _fileUploadService;
         public PostService(
             IApplicationUnitOfWork applicationUnitOfWork, 
             IMapper mapper,
-            IPostHubService postHubService
+            IPostHubService postHubService,
+            IFileUploadService fileUploadService
             )
         {
             _applicationUnitOfWork = applicationUnitOfWork;
             _mapper = mapper;
             _postHubService = postHubService;
+            _fileUploadService = fileUploadService;
         }
         public async Task<List<PostDto>> GetAllPostAsync(Guid loggedInUserId)
         {
@@ -32,14 +35,48 @@ namespace Tourixhub.Application.Services
             var postDtos = _mapper.Map<List<PostDto>>(allPosts);
             return postDtos;
         }
-        public async Task<bool> AddPost(AddPostDto postDto, Guid appUserId)
+        public async Task<PostDto?> AddPost(AddPostDto postDto, Guid appUserId, string token)
         {
-            var post = _mapper.Map<Post>(postDto);
-            post.AppUserId = appUserId;
-            post.CreateAt = DateTime.UtcNow;
-            post.UpdateAt = DateTime.UtcNow;
-            await _applicationUnitOfWork.PostRepository.AddAsync(post);
-            return await _applicationUnitOfWork.SaveAsync();
+            try
+            {
+                var post = new Post
+                {
+                    AppUserId = appUserId,
+                    Content = postDto.Content !=null? postDto.Content : string.Empty,
+                    CreateAt = DateTime.UtcNow,
+                    UpdateAt = DateTime.UtcNow
+                };
+                await _applicationUnitOfWork.PostRepository.AddAsync(post);
+
+                var postImages = new List<PostImage>();
+
+                if (postDto.Images != null && postDto.Images.Count > 0)
+                {
+                   var fileUrls = await _fileUploadService.UploadFiles(postDto.Images, token);
+                    foreach ( var fileUrl in fileUrls )
+                    {
+                        postImages.Add(new PostImage
+                        {
+                            PostId = post.Id,
+                            ImageUrl = fileUrl,
+                        });
+                    }
+                    await _applicationUnitOfWork.PostImageRepository.AddRangeAsync(postImages);
+                }
+
+                await _applicationUnitOfWork.SaveAsync();
+                var newPost = await _applicationUnitOfWork.PostRepository.GetByIdAsync(post.Id);
+
+
+                return _mapper.Map<PostDto>(newPost);
+
+                
+            }
+            catch
+            {
+                return null;
+            }
+            
         }
 
         public async Task<int?> TogglePostLikeAsync(ToggleLikeDto likeDto, Guid loggedInUserId)

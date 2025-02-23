@@ -19,8 +19,10 @@ namespace Tourixhub.Domain.Entities
         // FK
         public Guid AppUserId { get; set; }
 
+
         // Navigation
         public AppUser AppUser { get; set; }
+        public ICollection<PostImage> Images { get; set; } = [];
         public ICollection<Like> Likes { get; set; } = [];
         public ICollection<Comment> Comments { get; set; } = [];
         public ICollection<Favorite> Favorites { get; set; } = [];

@@ -72,10 +72,15 @@ namespace Tourixhub.Infrastructure.Repository
                     .Include(n => n.Likes)
                     .Include(n => n.Favorites)
                     .Include(n => n.Reports)
+                    .Include(n => n.Images)
                     .Include(n => n.Comments).ThenInclude(c => c.AppUser)
                     .OrderByDescending(p => p.CreateAt)
                     .ToListAsync();
             return allPosts;
+        }
+        public async Task<Post?> GellPostByIdAsync(Guid postId)
+        {
+            return await _context.Posts.Where(n => n.Id == postId).Include(n => n.Images).FirstOrDefaultAsync();
         }
 
         public async Task<bool> RemovePostAsync(Guid postId)

@@ -30,6 +30,7 @@ namespace Tourixhub.Application.Mappings
                 .ForMember(dest => dest.FavoriteCount, opt => opt.MapFrom(src => src.Favorites.Count))
                 .ForMember(dest => dest.ReportCount, opt => opt.MapFrom(src => src.Reports.Count))
                 .ForMember(dest => dest.LikedByUserIds, opt => opt.MapFrom(src => src.Likes.Select(l => l.AppUserId)))
+                .ForMember(dest => dest.Images, opt => opt.MapFrom(src => src.Images.Select(i => i.ImageUrl)))
                 .ForMember(dest => dest.FavoritedByUserIds, opt => opt.MapFrom(src => src.Favorites.Select(f => f.AppUserId)))
                 .ForMember(dest => dest.ReportedByUserIds, opt => opt.MapFrom(src => src.Reports.Select(r => r.AppUserId)));
 

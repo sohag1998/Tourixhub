@@ -10,6 +10,7 @@ namespace Tourixhub.Domain.Repository
     public interface IPostRepository: IRepository<Post, Guid>
     {
         Task<List<Post>> GetAllPostAsync(Guid loggedInUserId);
+        Task<Post?> GellPostByIdAsync(Guid postId);
         Task<List<Post>> GetAllFavoritePostAsync(Guid loggedInUserId);
         Task<bool> RemovePostAsync(Guid postId);
         Task<int?> TogglePostLikeAsync(Guid postId, Guid loggedInUserId);

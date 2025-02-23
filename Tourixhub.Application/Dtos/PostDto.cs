@@ -30,6 +30,7 @@ namespace Tourixhub.Application.Dtos
 
         // Comments
         public List<CommentDto> Comments { get; set; } = new List<CommentDto>();
+        public List<string> Images { get; set; } = new List<string>();
     }
 
     public class CommentDto

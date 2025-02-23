@@ -23,7 +23,7 @@ namespace Tourixhub.Infrastructure.SignalR
         }
         public async Task SendCommentUpdateAsync(string postId, List<CommentDto> comments)
         {
-            await _hubContext.Clients.All.SendAsync("ReceivedCommentUpdate", postId, comments);
+            await _hubContext.Clients.All.SendAsync("ReceivedCommentUpdate", postId, comments);     
         }
     }
 }

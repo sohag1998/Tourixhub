@@ -12,6 +12,7 @@ namespace Tourixhub.Infrastructure.Persistence
 
         public DbSet<AppUser> AppUsers { get; set; }
         public DbSet<Post> Posts { get; set; }
+        public DbSet<PostImage> PostImages { get; set; }
         public DbSet<Like> Likes { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Favorite> Favorites { get; set; }
@@ -29,6 +30,13 @@ namespace Tourixhub.Infrastructure.Persistence
                 .WithMany(u => u.Posts)
                 .HasForeignKey(p => p.AppUserId)
                 .OnDelete(DeleteBehavior.NoAction);
+           
+            //For Post Image
+            modelBuilder.Entity<PostImage>()
+                .HasOne(pi => pi.Post)
+                .WithMany(p => p.Images)
+                .HasForeignKey(pi => pi.PostId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // For Like Table
             modelBuilder.Entity<Like>()

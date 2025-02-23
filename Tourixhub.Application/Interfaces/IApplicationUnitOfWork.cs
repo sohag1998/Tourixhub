@@ -11,5 +11,6 @@ namespace Tourixhub.Application.Interfaces
     {
         IPostRepository PostRepository { get; }
         ICommentRepository CommentRepository { get; }
+        IPostImageRepository PostImageRepository { get; }
     }
 }

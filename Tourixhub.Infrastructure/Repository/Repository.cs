@@ -33,6 +33,10 @@ namespace Tourixhub.Infrastructure.Repository
         {
             await _dbSet.AddAsync(entity);
         }
+        public async Task AddRangeAsync(List<TEntity> entities)
+        {
+            await _dbSet.AddRangeAsync(entities);
+        }
 
         public void Update(TEntity entity)
         {

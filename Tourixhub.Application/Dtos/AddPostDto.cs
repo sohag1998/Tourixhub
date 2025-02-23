@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -10,10 +11,10 @@ namespace Tourixhub.Application.Dtos
 {
     public class AddPostDto
     {
-        [AtLeastOneRequired("ImageUrl", ErrorMessage = "Either Content or ImageUrl must be provided.")]
+        [AtLeastOneRequired("Images", ErrorMessage = "Either Content or at least one Image must be provided.")]
         public string? Content { get; set; }
 
-        [AtLeastOneRequired("Content", ErrorMessage = "Either Content or ImageUrl must be provided.")]
-        public string? ImageUrl { get; set; }
+        [AtLeastOneRequired("Content", ErrorMessage = "Either Content or at least one Image must be provided.")]
+        public List<IFormFile>? Images { get; set; }
     }
 }

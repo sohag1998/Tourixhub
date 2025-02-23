@@ -357,6 +357,26 @@ namespace Tourixhub.Infrastructure.Migrations
                     b.ToTable("Posts");
                 });
 
+            modelBuilder.Entity("Tourixhub.Domain.Entities.PostImage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("PostImages");
+                });
+
             modelBuilder.Entity("Tourixhub.Domain.Entities.Report", b =>
                 {
                     b.Property<Guid>("PostId")
@@ -519,6 +539,17 @@ namespace Tourixhub.Infrastructure.Migrations
                     b.Navigation("AppUser");
                 });
 
+            modelBuilder.Entity("Tourixhub.Domain.Entities.PostImage", b =>
+                {
+                    b.HasOne("Tourixhub.Domain.Entities.Post", "Post")
+                        .WithMany("Images")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Post");
+                });
+
             modelBuilder.Entity("Tourixhub.Domain.Entities.Report", b =>
                 {
                     b.HasOne("Tourixhub.Domain.Entities.AppUser", "AppUser")
@@ -569,6 +600,8 @@ namespace Tourixhub.Infrastructure.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("Favorites");
+
+                    b.Navigation("Images");
 
                     b.Navigation("Likes");
 
