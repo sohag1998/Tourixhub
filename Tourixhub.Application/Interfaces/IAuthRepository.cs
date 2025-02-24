@@ -12,5 +12,6 @@ namespace Tourixhub.Application.Interfaces
     {
         Task<AuthResponseDto> Signup(AppUser user, string password);
         Task<AppUser?> IsAppUserExit(LoginDto loginDto);
+        Task<List<AppUser>> GellAllUserasync();
     }
 }

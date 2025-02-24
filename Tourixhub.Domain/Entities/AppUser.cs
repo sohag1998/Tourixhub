@@ -21,5 +21,10 @@ namespace Tourixhub.Domain.Entities
         public ICollection<Favorite> Favorites { get; set; } = [];
         public ICollection<Report> Reports { get; set; } = [];
         public ICollection<Story> Stories { get; set; } = [];
+
+        public ICollection<FriendRequest> SentRequests {  get; set; }
+        public ICollection<FriendRequest> RecievedRequests { get; set; }
+        public ICollection<Friendship> Friendships { get; set; }
+
     }
 }

@@ -15,16 +15,27 @@ namespace Tourixhub.Infrastructure.Persistence
             ApplicationDbContext context, 
             IPostRepository postRepository, 
             ICommentRepository commentRepository,
-            IPostImageRepository postImageRepository) 
+            IPostImageRepository postImageRepository,
+            IFriendRepository friendRepository,
+            IFriendRequestReopsitory friendRequestReopsitory,
+            IAppUserRepository appUserRepository)
             : base(context)
         {
+            AppUserRepository = appUserRepository;
             PostRepository = postRepository;
             CommentRepository = commentRepository;
             PostImageRepository = postImageRepository;
+            FriendRepository = friendRepository;
+            FriendRequestReopsitory = friendRequestReopsitory;
+
         }
+        public IAppUserRepository AppUserRepository { get;}
 
         public IPostRepository PostRepository { get; }
         public ICommentRepository CommentRepository { get; }
         public IPostImageRepository PostImageRepository { get; }
+
+        public IFriendRepository FriendRepository { get; }
+        public IFriendRequestReopsitory FriendRequestReopsitory { get; }
     }
 }

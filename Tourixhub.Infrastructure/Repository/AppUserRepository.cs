@@ -10,20 +10,33 @@ using Tourixhub.Infrastructure.Persistence;
 
 namespace Tourixhub.Infrastructure.Repository
 {
-    public class AppUserRepository
+    public class AppUserRepository: Repository<AppUser, Guid>, IAppUserRepository
     {
         private readonly ApplicationDbContext _dbContext;
-        public AppUserRepository(ApplicationDbContext context) 
+        public AppUserRepository(ApplicationDbContext context): base(context) 
         {
             _dbContext = context;
         }
-        public void Add(AppUser appUser)
+
+        public async Task<List<AppUser>> GetNonFriendUsersAsync(Guid currentUserId)
         {
-            _dbContext.AppUsers.Add(appUser);
-        }
-        public async Task<List<AppUser>> GetLatestUsersAsync()
-        {
-            return await _dbContext.AppUsers.ToListAsync();
+            var friends = await _dbContext.Friends
+                .Where(f => f.UserOneId == currentUserId || f.UserTwoId == currentUserId)
+                .Select(f => f.UserOneId == currentUserId ? f.UserTwoId : f.UserOneId)
+                .ToListAsync();
+
+            var pendingRequest = await _dbContext.FriendRequests
+                .Where(fr => (fr.SenderId == currentUserId || fr.ReceiverId == currentUserId))
+                .Select(fr => fr.SenderId == currentUserId ? fr.ReceiverId : fr.SenderId)
+                .ToListAsync();
+
+            var nonFriendsUser = await _dbContext.AppUsers
+                .Where(u => u.Id != currentUserId &&
+                !friends.Contains(u.Id) &&
+                !pendingRequest.Contains(u.Id))
+                .ToListAsync();
+
+            return nonFriendsUser;
         }
     }
 }

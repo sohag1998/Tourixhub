@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Tourixhub.Infrastructure.Persistence;
 
@@ -11,9 +12,11 @@ using Tourixhub.Infrastructure.Persistence;
 namespace Tourixhub.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250223184059_FriendShipInIt")]
+    partial class FriendShipInIt
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -305,7 +308,7 @@ namespace Tourixhub.Infrastructure.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("FriendRequests");
+                    b.ToTable("FriendRequest");
                 });
 
             modelBuilder.Entity("Tourixhub.Domain.Entities.Friendship", b =>
@@ -335,7 +338,7 @@ namespace Tourixhub.Infrastructure.Migrations
                     b.HasIndex("UserOneId", "UserTwoId")
                         .IsUnique();
 
-                    b.ToTable("Friends");
+                    b.ToTable("Friendship");
                 });
 
             modelBuilder.Entity("Tourixhub.Domain.Entities.Hashtag", b =>

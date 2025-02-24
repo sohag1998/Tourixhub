@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Tourixhub.Application.Interfaces;
 using Tourixhub.Domain.Entities;
 
 namespace Tourixhub.Application.Controllers
@@ -11,31 +12,26 @@ namespace Tourixhub.Application.Controllers
     [ApiController]
     public class AccountEndPointController : ControllerBase
     {
-        private readonly UserManager<AppUser> _userManager;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        public AccountEndPointController(UserManager<AppUser> userManager, IHttpContextAccessor httpContextAccessor)
+        private readonly IUserService _userService;
+        private readonly IUserContextService _userContextService;
+        private readonly Guid _currentUserId;
+        public AccountEndPointController(IUserService userService, IUserContextService userContextService)
         {
-            _userManager = userManager;
-            _httpContextAccessor = httpContextAccessor;
+            _userService = userService;
+            _userContextService = userContextService;
+            _currentUserId = _userContextService.AppUserId;
         }
 
-        [HttpGet("getprofile")]
-        public async Task<IActionResult> GetProfile()
+        [HttpGet("users")]
+        public async Task<IActionResult> GetUsers()
         {
-            var user = _httpContextAccessor.HttpContext.User;
-            if (user == null || !user.Identity.IsAuthenticated)
+            var users = await _userService.GetNonFriendUsersAsync(_currentUserId);
+            if (users == null)
             {
-                return Unauthorized();  // If no user or not authenticated
+                return NotFound(new {message="No user is found"});
             }
-            string userId = user.Claims.First(x => x.Type == "UserId").Value;
 
-            var userDetalis = await _userManager.FindByIdAsync(userId);
-
-            return Ok(new
-            {
-                userDetalis.Email,
-                userDetalis.FullName
-            });
+            return Ok(users);
         }
     }
 }

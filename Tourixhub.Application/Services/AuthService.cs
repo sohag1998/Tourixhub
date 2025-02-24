@@ -33,5 +33,11 @@ namespace Tourixhub.Application.Services
 
             return result;
         }
+
+        public async Task<List<AppUser>> GellAllUserasync()
+        {
+            var users = await _authRepository.GellAllUserasync();
+            return users;
+        }
     }
 }

@@ -21,7 +21,7 @@ namespace Tourixhub.Application.Mappings
             CreateMap<Post, AddPostDto>().ReverseMap();
             CreateMap<Comment, AddCommentDto>();
 
-            CreateMap<AppUser, AppUserDto>();
+            CreateMap<AppUser, AppUserDto>().ReverseMap();
 
             CreateMap<Post, PostDto>()
                 .ForMember(dest => dest.AppUser, opt => opt.MapFrom(src => src.AppUser))

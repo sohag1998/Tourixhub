@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,6 +48,7 @@ namespace Tourixhub.Infrastructure.Repository
         public async Task<AppUser?> IsAppUserExit(LoginDto loginDto)
         {
             var appUser = await _userManager.FindByEmailAsync(loginDto.Email);
+            
 
             if (appUser != null && await _userManager.CheckPasswordAsync(appUser, loginDto.Password))
             {
@@ -56,6 +58,13 @@ namespace Tourixhub.Infrastructure.Repository
             {
                 return null;
             }
+        }
+
+        public async Task<List<AppUser>> GellAllUserasync()
+        {
+            var allUser = await _userManager.Users.ToListAsync();
+
+            return allUser;
         }
     }
 }

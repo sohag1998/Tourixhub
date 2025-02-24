@@ -11,6 +11,8 @@ namespace Tourixhub.Infrastructure.Persistence
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         public DbSet<AppUser> AppUsers { get; set; }
+        public DbSet<FriendRequest> FriendRequests { get; set; }
+        public DbSet<Friendship> Friends { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<PostImage> PostImages { get; set; }
         public DbSet<Like> Likes { get; set; }
@@ -23,6 +25,41 @@ namespace Tourixhub.Infrastructure.Persistence
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+
+            // Friends relations 
+            modelBuilder.Entity<Friendship>()
+                .HasIndex(f => new { f.UserOneId, f.UserTwoId })
+                .IsUnique();
+
+            // Define Relation
+            modelBuilder.Entity<AppUser>()
+                .HasMany(u => u.SentRequests)
+                .WithOne(fr => fr.Sender)
+                .HasForeignKey(fr => fr.SenderId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // 
+            modelBuilder.Entity<AppUser>()
+                .HasMany(u => u.RecievedRequests)
+                .WithOne(fr => fr.Receiver)
+                .HasForeignKey(fr => fr.ReceiverId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+
+            // For Friendship
+            modelBuilder.Entity<Friendship>()
+                .HasOne(f => f.UserOne)
+                .WithMany()
+                .HasForeignKey(f => f.UserOneId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Friendship>()
+                .HasOne(f => f.UserTwo)
+                .WithMany()
+                .HasForeignKey(f => f.UserTwoId)
+                .OnDelete(DeleteBehavior.NoAction);
+
 
             // For Post Table
             modelBuilder.Entity<Post>()
