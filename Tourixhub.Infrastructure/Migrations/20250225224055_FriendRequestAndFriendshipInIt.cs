@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Tourixhub.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class FriendShipInIt : Migration
+    public partial class FriendRequestAndFriendshipInIt : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "FriendRequest",
+                name: "FriendRequests",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -23,63 +23,62 @@ namespace Tourixhub.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FriendRequest", x => x.Id);
+                    table.PrimaryKey("PK_FriendRequests", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_FriendRequest_AspNetUsers_ReceiverId",
+                        name: "FK_FriendRequests_AspNetUsers_ReceiverId",
                         column: x => x.ReceiverId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_FriendRequest_AspNetUsers_SenderId",
+                        name: "FK_FriendRequests_AspNetUsers_SenderId",
                         column: x => x.SenderId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "Friendship",
+                name: "Friends",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserOneId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserTwoId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    
+                    CreateAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Friendship", x => x.Id);
+                    table.PrimaryKey("PK_Friends", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Friendship_AspNetUsers_UserOneId",
+                        name: "FK_Friends_AspNetUsers_UserOneId",
                         column: x => x.UserOneId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Friendship_AspNetUsers_UserTwoId",
+                        name: "FK_Friends_AspNetUsers_UserTwoId",
                         column: x => x.UserTwoId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_FriendRequest_ReceiverId",
-                table: "FriendRequest",
+                name: "IX_FriendRequests_ReceiverId",
+                table: "FriendRequests",
                 column: "ReceiverId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FriendRequest_SenderId",
-                table: "FriendRequest",
+                name: "IX_FriendRequests_SenderId",
+                table: "FriendRequests",
                 column: "SenderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Friendship_UserOneId_UserTwoId",
-                table: "Friendship",
+                name: "IX_Friends_UserOneId_UserTwoId",
+                table: "Friends",
                 columns: new[] { "UserOneId", "UserTwoId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Friendship_UserTwoId",
-                table: "Friendship",
+                name: "IX_Friends_UserTwoId",
+                table: "Friends",
                 column: "UserTwoId");
         }
 
@@ -87,10 +86,10 @@ namespace Tourixhub.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "FriendRequest");
+                name: "FriendRequests");
 
             migrationBuilder.DropTable(
-                name: "Friendship");
+                name: "Friends");
         }
     }
 }

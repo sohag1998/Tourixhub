@@ -12,8 +12,8 @@ using Tourixhub.Infrastructure.Persistence;
 namespace Tourixhub.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250223184059_FriendShipInIt")]
-    partial class FriendShipInIt
+    [Migration("20250311194322_ChatInit")]
+    partial class ChatInit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -232,6 +232,34 @@ namespace Tourixhub.Infrastructure.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("Tourixhub.Domain.Entities.Chat", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ReceiverId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SenderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReceiverId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("Chats");
+                });
+
             modelBuilder.Entity("Tourixhub.Domain.Entities.Comment", b =>
                 {
                     b.Property<Guid>("Id")
@@ -308,16 +336,13 @@ namespace Tourixhub.Infrastructure.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("FriendRequest");
+                    b.ToTable("FriendRequests");
                 });
 
             modelBuilder.Entity("Tourixhub.Domain.Entities.Friendship", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("AppUserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreateAt")
@@ -331,14 +356,12 @@ namespace Tourixhub.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId");
-
                     b.HasIndex("UserTwoId");
 
                     b.HasIndex("UserOneId", "UserTwoId")
                         .IsUnique();
 
-                    b.ToTable("Friendship");
+                    b.ToTable("Friends");
                 });
 
             modelBuilder.Entity("Tourixhub.Domain.Entities.Hashtag", b =>
@@ -531,6 +554,25 @@ namespace Tourixhub.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Tourixhub.Domain.Entities.Chat", b =>
+                {
+                    b.HasOne("Tourixhub.Domain.Entities.AppUser", "Receiver")
+                        .WithMany("ReceiveMessages")
+                        .HasForeignKey("ReceiverId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Tourixhub.Domain.Entities.AppUser", "Sender")
+                        .WithMany("SendMessages")
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Receiver");
+
+                    b.Navigation("Sender");
+                });
+
             modelBuilder.Entity("Tourixhub.Domain.Entities.Comment", b =>
                 {
                     b.HasOne("Tourixhub.Domain.Entities.AppUser", "AppUser")
@@ -590,18 +632,14 @@ namespace Tourixhub.Infrastructure.Migrations
 
             modelBuilder.Entity("Tourixhub.Domain.Entities.Friendship", b =>
                 {
-                    b.HasOne("Tourixhub.Domain.Entities.AppUser", null)
-                        .WithMany("Friendships")
-                        .HasForeignKey("AppUserId");
-
                     b.HasOne("Tourixhub.Domain.Entities.AppUser", "UserOne")
-                        .WithMany()
+                        .WithMany("FriendshipsInit")
                         .HasForeignKey("UserOneId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Tourixhub.Domain.Entities.AppUser", "UserTwo")
-                        .WithMany()
+                        .WithMany("FriendshipsReceived")
                         .HasForeignKey("UserTwoId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
@@ -688,15 +726,21 @@ namespace Tourixhub.Infrastructure.Migrations
 
                     b.Navigation("Favorites");
 
-                    b.Navigation("Friendships");
+                    b.Navigation("FriendshipsInit");
+
+                    b.Navigation("FriendshipsReceived");
 
                     b.Navigation("Likes");
 
                     b.Navigation("Posts");
 
+                    b.Navigation("ReceiveMessages");
+
                     b.Navigation("RecievedRequests");
 
                     b.Navigation("Reports");
+
+                    b.Navigation("SendMessages");
 
                     b.Navigation("SentRequests");
 

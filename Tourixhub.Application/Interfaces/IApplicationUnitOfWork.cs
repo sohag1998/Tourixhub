@@ -16,5 +16,7 @@ namespace Tourixhub.Application.Interfaces
 
         IFriendRepository FriendRepository { get; }
         IFriendRequestReopsitory FriendRequestReopsitory { get; }
+
+        IChatRepository ChatRepository { get; }
     }
 }

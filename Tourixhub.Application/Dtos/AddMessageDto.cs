@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Tourixhub.Application.Dtos
 {
-    public class FriendRequstDto
+    public class AddMessageDto
     {
         public Guid ReceiverId { get; set; }
+        public string Message { get; set; }
     }
 }

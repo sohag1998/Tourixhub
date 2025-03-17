@@ -12,8 +12,8 @@ using Tourixhub.Infrastructure.Persistence;
 namespace Tourixhub.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250224143822_CorrectTheFriendTables")]
-    partial class CorrectTheFriendTables
+    [Migration("20250225224055_FriendRequestAndFriendshipInIt")]
+    partial class FriendRequestAndFriendshipInIt
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -317,9 +317,6 @@ namespace Tourixhub.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("AppUserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 
@@ -330,8 +327,6 @@ namespace Tourixhub.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
 
                     b.HasIndex("UserTwoId");
 
@@ -590,18 +585,14 @@ namespace Tourixhub.Infrastructure.Migrations
 
             modelBuilder.Entity("Tourixhub.Domain.Entities.Friendship", b =>
                 {
-                    b.HasOne("Tourixhub.Domain.Entities.AppUser", null)
-                        .WithMany("Friendships")
-                        .HasForeignKey("AppUserId");
-
                     b.HasOne("Tourixhub.Domain.Entities.AppUser", "UserOne")
-                        .WithMany()
+                        .WithMany("FriendshipsInit")
                         .HasForeignKey("UserOneId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Tourixhub.Domain.Entities.AppUser", "UserTwo")
-                        .WithMany()
+                        .WithMany("FriendshipsReceived")
                         .HasForeignKey("UserTwoId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
@@ -688,7 +679,9 @@ namespace Tourixhub.Infrastructure.Migrations
 
                     b.Navigation("Favorites");
 
-                    b.Navigation("Friendships");
+                    b.Navigation("FriendshipsInit");
+
+                    b.Navigation("FriendshipsReceived");
 
                     b.Navigation("Likes");
 

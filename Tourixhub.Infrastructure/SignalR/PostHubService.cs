@@ -9,7 +9,7 @@ using Tourixhub.Application.Interfaces;
 
 namespace Tourixhub.Infrastructure.SignalR
 {
-    public class PostHubService: IPostHubService
+    public class PostHubService : IPostHubService
     {
         private readonly IHubContext<ApplicationHub> _hubContext;
 
@@ -23,7 +23,7 @@ namespace Tourixhub.Infrastructure.SignalR
         }
         public async Task SendCommentUpdateAsync(string postId, List<CommentDto> comments)
         {
-            await _hubContext.Clients.All.SendAsync("ReceivedCommentUpdate", postId, comments);     
+            await _hubContext.Clients.All.SendAsync("ReceivedCommentUpdate", postId, comments);
         }
     }
 }

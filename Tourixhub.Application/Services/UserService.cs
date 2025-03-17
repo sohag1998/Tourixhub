@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Tourixhub.Application.Dtos;
 using Tourixhub.Application.Interfaces;
+using Tourixhub.Domain.Entities;
 
 namespace Tourixhub.Application.Services
 {
@@ -25,6 +26,13 @@ namespace Tourixhub.Application.Services
             var newUsers = _mapper.Map<List<AppUserDto>>(nonFriendUsers);
             return newUsers;
 
+        }
+
+        public async Task<List<AppUserDto>> GetWhoSentRequest(Guid currentUserId)
+        {
+            var recievedRequest = await _applicationUnitOfWork.AppUserRepository.GetWhoSentRequest(currentUserId);
+
+            return _mapper.Map<List<AppUserDto>>(recievedRequest);
         }
     }
 }

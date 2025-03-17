@@ -18,7 +18,8 @@ namespace Tourixhub.Infrastructure.Persistence
             IPostImageRepository postImageRepository,
             IFriendRepository friendRepository,
             IFriendRequestReopsitory friendRequestReopsitory,
-            IAppUserRepository appUserRepository)
+            IAppUserRepository appUserRepository,
+            IChatRepository chatRepository)
             : base(context)
         {
             AppUserRepository = appUserRepository;
@@ -27,6 +28,7 @@ namespace Tourixhub.Infrastructure.Persistence
             PostImageRepository = postImageRepository;
             FriendRepository = friendRepository;
             FriendRequestReopsitory = friendRequestReopsitory;
+            ChatRepository = chatRepository;
 
         }
         public IAppUserRepository AppUserRepository { get;}
@@ -37,5 +39,7 @@ namespace Tourixhub.Infrastructure.Persistence
 
         public IFriendRepository FriendRepository { get; }
         public IFriendRequestReopsitory FriendRequestReopsitory { get; }
+
+        public IChatRepository ChatRepository { get; }
     }
 }

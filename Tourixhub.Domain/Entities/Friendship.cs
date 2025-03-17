@@ -11,19 +11,14 @@ namespace Tourixhub.Domain.Entities
     {
         public Guid Id { get; set; }
 
-        
+        [ForeignKey("UserOne")]
         public Guid UserOneId { get; set; }
-        
-
-        
-        public Guid UserTwoId {  get; set; }
-
-
-        [ForeignKey("UserOneId")]
         public AppUser UserOne { get; set; }
 
-        [ForeignKey("UserTwoId")]
+        [ForeignKey("UserTwo")]
+        public Guid UserTwoId { get; set; }
         public AppUser UserTwo { get; set; }
+        
 
         public DateTime CreateAt { get; set; } = DateTime.UtcNow;
 

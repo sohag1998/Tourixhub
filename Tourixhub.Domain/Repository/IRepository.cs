@@ -14,5 +14,6 @@ namespace Tourixhub.Domain.Repository
         Task AddAsync(TEntity entity);
         Task AddRangeAsync(List<TEntity> entities);
         void Update(TEntity entity);
+        void Remove(TEntity entity);
     }
 }

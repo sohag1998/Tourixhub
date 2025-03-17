@@ -22,9 +22,15 @@ namespace Tourixhub.Domain.Entities
         public ICollection<Report> Reports { get; set; } = [];
         public ICollection<Story> Stories { get; set; } = [];
 
-        public ICollection<FriendRequest> SentRequests {  get; set; }
-        public ICollection<FriendRequest> RecievedRequests { get; set; }
-        public ICollection<Friendship> Friendships { get; set; }
+        public ICollection<FriendRequest> SentRequests {  get; set; } = new HashSet<FriendRequest>();
+        public ICollection<FriendRequest> RecievedRequests { get; set; } = new HashSet<FriendRequest>();
+        public ICollection<Friendship> FriendshipsInit { get; set; } = new HashSet<Friendship>();
+        public ICollection<Friendship> FriendshipsReceived { get; set; } = new HashSet<Friendship>();
+
+        public ICollection<Chat> ReceiveMessages { get; set; } = new HashSet<Chat>();
+
+        public ICollection<Chat> SendMessages { get; set; } = new HashSet<Chat>();
+
 
     }
 }

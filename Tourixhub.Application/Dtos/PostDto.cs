@@ -49,5 +49,4 @@ namespace Tourixhub.Application.Dtos
         public string? ProfilePictureUrl { get; set; }
     }
 
-
 }

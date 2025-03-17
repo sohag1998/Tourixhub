@@ -36,10 +36,15 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IFriendRequestReopsitory, FriendRequestReopsitory>();
 builder.Services.AddScoped<IFriendRepository, FriendRepository>();
 builder.Services.AddScoped<IFriendService, FriendService>();
-builder.Services.AddScoped<ILikeHubService, LikeHubService>();
-builder.Services.AddScoped<ICommentHubService, CommentHubService>();
+builder.Services.AddScoped<IChatRepository, ChatRepository>();
+builder.Services.AddScoped<IChatService, ChatService>();
+
+
 builder.Services.AddScoped<IPostHubService, PostHubService>();
+builder.Services.AddScoped<IFriendHubService, FriendHubService>();
 builder.Services.AddScoped<IUserContextService, UserContextService>();
+
+
 
 
 // AutoMapper Profiler
@@ -84,6 +89,7 @@ app.UseHttpsRedirection();
 app.MapControllers();
 //app.MapIdentityApi<AppUser>();
 app.MapHub<ApplicationHub>("/hub/postHub");
+app.MapHub<ApplicationHub>("/hub/friendsHub");
     
 
 app.Run();

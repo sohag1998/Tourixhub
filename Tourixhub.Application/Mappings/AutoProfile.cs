@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tourixhub.Application.Dtos;
+using Tourixhub.Domain.Dtos;
 using Tourixhub.Domain.Entities;
 
 namespace Tourixhub.Application.Mappings
@@ -36,6 +37,19 @@ namespace Tourixhub.Application.Mappings
 
             CreateMap<Comment, CommentDto>()
                 .ForMember(dest => dest.AppUser, opt => opt.MapFrom(src => src.AppUser));
+
+
+            CreateMap<FriendRequest, AppUserDto>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src =>src.Sender.Id))
+                .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.Sender.FullName))
+                .ForMember(dest => dest.ProfilePictureUrl, opt => opt.MapFrom(src => src.Sender.ProfilePictureUrl));
+
+            CreateMap<FriendDto, AppUserDto>();
+
+            CreateMap<Chat, ChatDto>().ReverseMap();
+              
+
+
         }
     }
 }

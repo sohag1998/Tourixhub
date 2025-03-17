@@ -42,5 +42,9 @@ namespace Tourixhub.Infrastructure.Repository
         {
             _dbSet.Update(entity);
         }
+        public void Remove(TEntity entity)
+        {
+            _dbSet.Remove(entity);
+        }
     }
 }

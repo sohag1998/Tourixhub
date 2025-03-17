@@ -13,6 +13,7 @@ namespace Tourixhub.Infrastructure.Persistence
         public DbSet<AppUser> AppUsers { get; set; }
         public DbSet<FriendRequest> FriendRequests { get; set; }
         public DbSet<Friendship> Friends { get; set; }
+        public DbSet<Chat> Chats { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<PostImage> PostImages { get; set; }
         public DbSet<Like> Likes { get; set; }
@@ -27,10 +28,16 @@ namespace Tourixhub.Infrastructure.Persistence
             base.OnModelCreating(modelBuilder);
 
 
-            // Friends relations 
-            modelBuilder.Entity<Friendship>()
-                .HasIndex(f => new { f.UserOneId, f.UserTwoId })
-                .IsUnique();
+            modelBuilder.Entity<AppUser>()
+                .HasMany(u => u.SendMessages)
+                .WithOne(m => m.Sender)
+                .HasForeignKey(m => m.SenderId)
+                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<AppUser>()
+                .HasMany(u => u.ReceiveMessages)
+                .WithOne(m => m.Receiver)
+                .HasForeignKey(m => m.ReceiverId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             // Define Relation
             modelBuilder.Entity<AppUser>()
@@ -47,16 +54,20 @@ namespace Tourixhub.Infrastructure.Persistence
                 .OnDelete(DeleteBehavior.NoAction);
 
 
+            // Friends relations 
+            modelBuilder.Entity<Friendship>()
+                .HasIndex(f => new { f.UserOneId, f.UserTwoId })
+                .IsUnique();
             // For Friendship
             modelBuilder.Entity<Friendship>()
                 .HasOne(f => f.UserOne)
-                .WithMany()
+                .WithMany(f => f.FriendshipsInit)
                 .HasForeignKey(f => f.UserOneId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Friendship>()
                 .HasOne(f => f.UserTwo)
-                .WithMany()
+                .WithMany(f => f.FriendshipsReceived)
                 .HasForeignKey(f => f.UserTwoId)
                 .OnDelete(DeleteBehavior.NoAction);
 

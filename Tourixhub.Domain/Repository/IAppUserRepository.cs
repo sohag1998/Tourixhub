@@ -10,5 +10,6 @@ namespace Tourixhub.Domain.Repository
     public interface IAppUserRepository: IRepository<AppUser, Guid>
     {
         Task<List<AppUser>> GetNonFriendUsersAsync(Guid currentUserId);
+        Task<List<AppUser>> GetWhoSentRequest(Guid currentUserId);
     }
 }

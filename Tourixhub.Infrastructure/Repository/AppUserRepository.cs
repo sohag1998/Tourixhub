@@ -38,5 +38,14 @@ namespace Tourixhub.Infrastructure.Repository
 
             return nonFriendsUser;
         }
+
+        public async Task<List<AppUser>> GetWhoSentRequest(Guid currentUserId)
+        {
+            var users = await _dbContext.AppUsers
+                .Where(u => u.SentRequests.Any(r => r.ReceiverId == currentUserId))
+                .ToListAsync();
+            
+            return users;
+        }
     }
 }

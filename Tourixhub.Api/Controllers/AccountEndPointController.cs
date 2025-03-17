@@ -22,16 +22,14 @@ namespace Tourixhub.Application.Controllers
             _currentUserId = _userContextService.AppUserId;
         }
 
-        [HttpGet("users")]
-        public async Task<IActionResult> GetUsers()
-        {
-            var users = await _userService.GetNonFriendUsersAsync(_currentUserId);
-            if (users == null)
-            {
-                return NotFound(new {message="No user is found"});
-            }
+    
 
-            return Ok(users);
+        [HttpGet("receivedrequest")]
+        public async Task<IActionResult> GetReceivedRequest()
+        {
+            var users = await _userService.GetWhoSentRequest(_currentUserId);
+
+            return Ok( new { receivedRequest = users });
         }
     }
 }
