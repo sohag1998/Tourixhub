@@ -11,7 +11,7 @@ namespace Tourixhub.Infrastructure.SignalR
 {
     public class FriendHubService: IFriendHubService
     {
-        public IHubContext<ApplicationHub> _context;
+        private readonly IHubContext<ApplicationHub> _context;
 
         public FriendHubService(IHubContext<ApplicationHub> context)
         {

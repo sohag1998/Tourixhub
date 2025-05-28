@@ -49,5 +49,15 @@ namespace Tourixhub.Api.Controllers
             var messages = await _chatService.GetAllSendMessageByAppUserId(_currentUserId, Guid.Parse(receiverId));
             return Ok(new { success = true, messages = messages });
         }
+
+
+        [HttpGet("messages")]
+        public async Task<IActionResult> GetMessages(string friendId)
+        {
+            if (string.IsNullOrWhiteSpace(friendId)) return BadRequest(ModelState);
+
+            var messages = await _chatService.GetMessages(_currentUserId, Guid.Parse(friendId));
+            return Ok(new { success = true, messages = messages });
+        }
     }
 }

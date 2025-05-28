@@ -17,7 +17,14 @@ namespace Tourixhub.Infrastructure.Repository
         {
             _context = context;
         }
+        public async Task<List<Chat>> GetMessages(Guid currentUserId, Guid senderId)
+        {
+            var messages = await _context.Chats
+                .Where(m => (m.ReceiverId == currentUserId && m.SenderId == senderId) || (m.SenderId == currentUserId && m.ReceiverId == senderId))
+                .ToListAsync();
 
+            return messages;
+        }
         public async Task<List<Chat>> GetAllReceivedMessageByAppUserId(Guid currentUserId, Guid senderId)
         {
             var chats = await _context.Chats
@@ -46,10 +53,10 @@ namespace Tourixhub.Infrastructure.Repository
             return message;
         }
 
-        public async Task<Chat?> GetLastSendMessageByAppUserId(Guid currentUserId, Guid senderId)
+        public async Task<Chat?> GetLastSendMessageByAppUserId(Guid currentUserId, Guid receiverId)
         {
             var message = await _context.Chats
-                .Where(m => m.ReceiverId == senderId && m.SenderId == currentUserId)
+                .Where(m => m.ReceiverId == receiverId && m.SenderId == currentUserId)
                 .OrderByDescending(m => m.CreateAt)
                 .FirstOrDefaultAsync();
 

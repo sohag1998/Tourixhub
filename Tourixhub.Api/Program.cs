@@ -42,6 +42,7 @@ builder.Services.AddScoped<IChatService, ChatService>();
 
 builder.Services.AddScoped<IPostHubService, PostHubService>();
 builder.Services.AddScoped<IFriendHubService, FriendHubService>();
+builder.Services.AddScoped<IChatHubService, ChatHubService>();
 builder.Services.AddScoped<IUserContextService, UserContextService>();
 
 
@@ -90,6 +91,7 @@ app.MapControllers();
 //app.MapIdentityApi<AppUser>();
 app.MapHub<ApplicationHub>("/hub/postHub");
 app.MapHub<ApplicationHub>("/hub/friendsHub");
+app.MapHub<ApplicationHub>("/hub/chat");
     
 
 app.Run();

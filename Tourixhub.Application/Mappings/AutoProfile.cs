@@ -47,7 +47,8 @@ namespace Tourixhub.Application.Mappings
             CreateMap<FriendDto, AppUserDto>();
 
             CreateMap<Chat, ChatDto>().ReverseMap();
-              
+
+            CreateMap<Chat, ChatDto2>().ReverseMap();
 
 
         }
